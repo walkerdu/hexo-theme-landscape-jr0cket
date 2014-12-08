@@ -1,27 +1,30 @@
 # Landscape
 
-A brand new default theme for [Hexo].
+A variation on the landscape theme (Hexo default theme).  Customisations include
 
-- [Preview](http://hexo.io/hexo-theme-landscape/)
+- Ubuntu fonts
+- padding and round corners on code blocks
+- 3 styles for images when using swig (thumbnail, code & topic)
+- minimised spacing everywhere, smaller header banner
+
+- [Preview theme by viewing my blog](http://jr0cket.co.uk/)
 
 ## Installation
 
-### Install
-
 ``` bash
-$ git clone https://github.com/hexojs/hexo-theme-landscape.git themes/landscape
+git clone https://github.com/hexojs/hexo-theme-landscape.git themes/landscape-jr0cket
 ```
 
 **Landscape requires Hexo 2.4 and above.**
 
 ### Enable
 
-Modify `theme` setting in `_config.yml` to `landscape`.
+Modify `theme` setting in `_config.yml` to `landscape-jr0cket`.
 
 ### Update
 
 ``` bash
-cd themes/landscape
+cd themes/landscape-jr0cket
 git pull
 ```
 
@@ -91,21 +94,3 @@ Landscape provides 5 built-in widgets:
 
 All of them are enabled by default. You can edit them in `widget` setting.
 
-## Development
-
-### Requirements
-
-- [Grunt] 0.4+
-- Hexo 2.4+
-
-### Grunt tasks
-
-- **default** - Download [Fancybox] and [Font Awesome].
-- **fontawesome** - Only download [Font Awesome].
-- **fancybox** - Only download [Fancybox].
-- **clean** - Clean temporarily files and downloaded files.
-
-[Hexo]: http://zespia.tw/hexo/
-[Fancybox]: http://fancyapps.com/fancybox/
-[Font Awesome]: http://fontawesome.io/
-[Grunt]: http://gruntjs.com/
