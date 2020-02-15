@@ -30,8 +30,6 @@
           <!-- <%- toc(post.content) %> -->
           <%- toc(post.content, {list_number: false}) %>
           </div>
-          <div class ="article-entry">
-          </div>
         <% } %>
         <!-- walkerdu: Table of Contents end-->
 
@@ -53,57 +51,45 @@
 
     <footer class="article-footer">
       <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link">Share</a>
-      <% if (post.comments && config.disqus_shortname){ %>
+      <% if (post.comments && config.duoshuo_shortname){ %>
         <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link">Comments</a>
       <% } %>
       <%- partial('post/tag') %>
     </footer>
-
   </div>
   <% if (!index){ %>
     <%- partial('post/nav') %>
   <% } %>
 </article>
 
+<!--
 <% if (!index && post.comments && config.disqus_shortname){ %>
-    <!-- 
-    -->
-    <section id="comments">
-      <div id="disqus_thread">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-      </div>
-    </section>
-
-    <!--
-    <section id="comments">
-        <div id="uyan_frame"></div>
-        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2143067"></script>
-    </section>
-    -->
-
-    <!--<p><font color='red'>必须登录github帐号才可以查看评论和进行评论</font></p>-->
-    <!-- add github comment at 2018-01-04-->
-    <!-- 
-    <section id="comments">
-        <div id="gitmentContainer"></div>
-        <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-        <script type="text/javascript" src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
-        <script type="text/javascript">
-            var gitment = new Gitment({
-                owner: 'anonymalias',
-                repo: 'blog_comment',
-                oauth: {
-                client_id: '1b187e9f0a494b34eb67',
-                client_secret: 'd4eec56846228f7a9fc86e67a2b02c7f3236ae53',
-              },
-            })
-            gitment.render('gitmentContainer')
-        </script>
-    </section>
-    -->
-    <section id="comments">
-            <img src="https://raw.githubusercontent.com/anonymalias/util_mess/master/walkerdu_wechat_prize.jpg" width="40%" height="40%" alt="" />
-    </section>
-
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
 <% } %>
+-->
 
+<!-- new disqus plugin-->
+<% if (!index && post.comments && config.duoshuo_shortname){ %>
+  <section id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="<%= post.layout %>-<%= post.slug %>" data-title="<%= post.title %>" data-url="<%= page.permalink %>"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'<%= config.duoshuo_shortname %>'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+  </section>
+<% } %>

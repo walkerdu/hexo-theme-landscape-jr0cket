@@ -1,0 +1,300 @@
+<article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
+    <%- partial('post/category') %>
+  </div>
+  <div class="article-inner">
+    <%- partial('post/gallery') %>
+    <% if (post.link || post.title){ %>
+      <header class="article-header">
+        <%- partial('post/title', {class_name: 'article-title'}) %>
+      </header>
+    <% } %>
+
+    <div class="article-entry" itemprop="articleBody">
+      <% if (post.excerpt && index) { %>
+      <%- post.excerpt %>
+      <% if (theme.excerpt_link) { %>
+        <p class="article-more-link">
+          <a href="<%- config.root %><%- post.path %>#more"><%= theme.excerpt_link %></a>
+        </p>
+        <% } %>
+
+      <!--walkerdu: add for auto "Read More" -->
+      <% } else { %>
+
+        <!-- walkerdu: Table of Contents -->
+        <% if (!index && post.toc){ %>
+          <div id="toc" class="toc-article">
+          <strong class="toc-title">文章目录</strong>
+          <!-- <%- toc(post.content) %> -->
+          <%- toc(post.content, {list_number: false}) %>
+          </div>
+        <% } %>
+        <!-- walkerdu: Table of Contents end-->
+
+        <% var br = post.content.indexOf('\n') %>
+          <% if(br < 0 || !index) { %>
+            <%- post.content %>
+          <% } else { %>
+            <%- post.content.substring(0, br) %>
+          <% if (theme.excerpt_link) { %>
+            <p class="article-more-link">
+              <a href="<%- config.root %><%- post.path %>#more"><%= theme.excerpt_link %></a>
+            </p>
+          <% } %>
+        <% } %>
+      <% } %>
+      <!--walkerdu: add for auto "Read More" end -->
+
+    </div>
+
+    <footer class="article-footer">
+      <a data-url="<%- post.permalink %>" data-id="<%= post._id %>" class="article-share-link">Share</a>
+      <% if (post.comments && config.duoshuo_shortname){ %>
+        <a href="<%- post.permalink %>#disqus_thread" class="article-comment-link">Comments</a>
+      <% } %>
+      <%- partial('post/tag') %>
+    </footer>
+  </div>
+  <% if (!index){ %>
+    <%- partial('post/nav') %>
+  <% } %>
+</article>
+
+<!--
+<% if (!index && post.comments && config.disqus_shortname){ %>
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+<% } %>
+-->
+
+<!-- new disqus plugin-->
+<% if (!index && post.comments && config.duoshuo_shortname){ %>
+  <section id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="<%= post.layout %>-<%= post.slug %>" data-title="<%= post.title %>" data-url="<%= page.permalink %>"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+
+    <div id="comment_show"></div>
+
+    <div class = "comment-box" style = "display:block;">
+        <textarea rows="3" cols="50" id = "comment_content"></textarea>
+        </br>name: <input type="text" id="comment_user" />
+        </br>e-mail: <input type="text" id="comment_email" />
+        </br><button type="button" onclick="submit_comment(this)" style="width:50px;height:20px;">提交</button>
+    </div>
+
+    <script type="text/javascript">
+
+        var title = "<%= post.title %>"
+        var myRequest = new Request('http://ml.walkerdu.ml/comment?article_key=' + title);
+
+        
+        fetch(myRequest).then(function(response) {
+          return response.json().then(function(json) {
+              <!--fresh_page(json);-->
+              renderComment(json);
+          });
+        });
+        
+        function renderComment(json)
+        {
+            var allComment = "";
+            for(var i=0, item; item=json.commentInfo[i]; i++)
+            {
+                allComment += createCommentTag(item);
+            }
+
+            document.getElementById("comment_show").innerHTML = allComment;
+
+            document.getElementById("comment_user").value = "";
+            document.getElementById("comment_email").value = "";
+            document.getElementById("comment_content").value = "";
+
+        }
+
+        function createCommentTag(commentInfo)
+        {
+            var html = "<div class='comment' comment-id = '" + commentInfo.id + "'>"
+                     + createCommentHeader(commentInfo)
+                     + createCommentContent(commentInfo)
+                     + createCommentFooter(commentInfo)
+                     + "</div>";
+            return html;
+        }
+
+        function createCommentHeader(commentInfo)
+        {
+            var html = "<div class='comment-header'>";
+            html += "<p><span>"+commentInfo.name+": </span></p></div>";
+            return html;
+        }
+
+        function createCommentContent(commentInfo)
+        {
+            var html = "<div class='comment-content'>";
+            html += "<p>"+commentInfo.commentContent+": </p></div>";
+            return html;
+        }
+
+        function createCommentFooter(commentInfo)
+        {
+            var obj_date = new Date();
+            obj_date.setTime(commentInfo.commentTime * 1000);
+
+            var html = "<div class='comment-footer'>";
+            html += "<p>"+  obj_date.toLocaleString();
+            html += '<a href="javascript:void(0);" onclick = "onReply(this)" comment-name = "' + commentInfo.name + '">回复</a>'
+            html += "</p>";
+            html +="</div>";
+            html += createReplyTag(commentInfo);
+            html += '\
+                <div class = "reply-box"  style="display:none;">\
+                    <textarea rows="3" cols="50" id = "comment_content"></textarea>\
+                    </br>name: <input type="text" id="comment_user" />\
+                    </br>e-mail: <input type="text" id="comment_email" />\
+                    </br><button type="button" onclick="submit_comment(this)" style="width:50px;height:20px;">提交</button>\
+                </div>\
+            '
+
+            return html;
+        }
+
+        function createReplyTag(commentInfo)
+        {
+            var reply_info = commentInfo.replyInfo || [];
+            var html = ""
+
+            for(var idx = 0; idx < reply_info.length; ++idx)
+            {
+                var obj_date = new Date();
+                obj_date.setTime(reply_info[idx].replyTime * 1000);
+
+                html += "<div class='comment-reply'>";
+                html += "<p>";
+                html += "<font color=#009a61>" + reply_info[idx].name + "</font>: " ;
+                html += reply_info[idx].replyContent;
+                html += " <font color=#009a61>" + obj_date.toLocaleString() + "</font>"
+                html += '<a href="javascript:void(0);" onclick = "onReply(this)" comment-name = "' + reply_info[idx].name + '">回复</a>'
+                html += "</p>";
+                html += "</div>";
+            }
+
+            return html;
+        }
+
+        function createCommentReply(commentInfo)
+        {
+        }
+
+        function onReply(object)
+        {
+            var elem_click = object.parentNode.parentNode.parentNode.querySelector(".reply-box");
+
+            if(elem_click.style.display=="none"){
+                elem_click.querySelector("#comment_content").value = "@:" + object.getAttribute("comment-name");
+                elem_click.style.display = "block";
+            }else{
+                elem_click.style.display = "none";
+            }
+
+            var elem_comment_box = object.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector(".comment-box");
+            if(elem_click.style.display == "none")
+            {
+                elem_comment_box.style.display = "block"
+            }
+            else
+            {
+                elem_comment_box.style.display = "none"
+            }
+
+            var elems = document.getElementsByClassName("reply-box")
+
+            for (var idx = 0; idx < elems.length; ++idx)
+            {
+                if(elems[idx] == elem_click)
+                    continue;
+
+                if(elems[idx].style.display == "block")
+                {
+                    elems[idx].style.display = "none";
+                }
+            }
+        }
+ 
+
+        function submit_comment(target)
+        {
+            box_node = target.parentNode;
+            var comment_id = 0;
+
+            if(box_node.className == "reply-box")
+            {
+                comment_id = box_node.parentNode.getAttribute("comment-id");
+            }
+
+            user_name = box_node.querySelector("#comment_user").value;
+            email = box_node.querySelector("#comment_email").value;
+            content  = box_node.querySelector("#comment_content").value;
+            
+            var comment_str = {
+              "commentInfo": [
+                {
+                  "commentContent": content, 
+                  "commentTime": 1232132131, 
+                  "uid": 1, 
+                  "name": user_name 
+                }
+              ], 
+              "title": title 
+            } 
+
+            var comment_str = new Object(); 
+            comment_str.title = title;
+            comment_str.commentInfo = new Array();
+            comment_str.commentInfo[0] = new Object();
+
+            if(comment_id)
+            {
+                comment_str.commentInfo[0].id = comment_id;
+                comment_str.commentInfo[0].replyInfo = new Array();
+                comment_str.commentInfo[0].replyInfo[0] = new Object();
+                reply_info = comment_str.commentInfo[0].replyInfo[0];
+                reply_info.replyContent = content;
+                reply_info.name = user_name
+            }
+            else
+            {
+                comment_str.commentInfo[0].name = user_name;
+                comment_str.commentInfo[0].commentContent = content;
+            }
+
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "text/plain");
+
+            var myInit = { 
+                            method: 'POST',
+                            headers: myHeaders,
+                            mode: 'cors',
+                            cache: 'default',
+                            body: JSON.stringify(comment_str)
+                         };
+
+            var myRequest = new Request('http://ml.walkerdu.ml/comment', myInit);
+            
+            fetch(myRequest).then(function(response) {
+              return response.json().then(function(json) {
+                  <!--fresh_page(json);-->
+                  renderComment(json);
+              });
+              });
+        }
+    </script>
+    <!-- 多说公共JS代码 end -->
+  </section>
+<% } %>

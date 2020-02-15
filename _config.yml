@@ -1,13 +1,11 @@
 # Header
 menu:
-  Home: /
-  DevGuides: http://jr0cket.co.uk/developer-guides
-  Slides:    http://jr0cket.co.uk/slides
-  Workshops: /workshops
-  Clojure: /clojure
-  Hexo: /hexo
-  Ubuntu: http://ubuntu.jr0cket.co.uk
-rss: /atom.xml
+  HOME: / 
+  #CSDN: http://blog.csdn.net/anonymalias
+  GITHUB: https://github.com/walkerdu 
+  INFO: 2017/03/08/info 
+  WIKI: http://wiki.walkerdu.com 
+#rss: /atom.xml
 
 # Content
 excerpt_link: Read More
@@ -19,13 +17,14 @@ widgets:
 - recent_posts
 - category
 - tagcloud
+- archive 
 
 
 
 # Miscellaneous
 google_analytics: UA-28030709-2
 favicon: /favicon.png
-twitter: jr0cket 
 google_plus:
 fb_admins:
 fb_app_id:
+
