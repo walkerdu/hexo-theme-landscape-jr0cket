@@ -3,7 +3,7 @@ menu:
   HOME: / 
   #CSDN: http://blog.csdn.net/anonymalias
   GITHUB: https://github.com/walkerdu 
-  INFO: 2017/03/08/info 
+  INFO: 2017/03/08/self_introduction
   WIKI: http://wiki.walkerdu.com 
 #rss: /atom.xml
 
@@ -28,3 +28,12 @@ google_plus:
 fb_admins:
 fb_app_id:
 
+math:
+  enable: true
+
+  # Default (true) will load mathjax / katex script on demand.
+  # That is it only render those page which has `mathjax: true` in Front-matter.
+  # If you set it to false, it will load mathjax / katex srcipt EVERY PAGE.
+  per_page: true
+
+  engine: mathjax
