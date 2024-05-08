@@ -63,6 +63,7 @@
   <% if (!index){ %>
     <%- partial('post/nav') %>
   <% } %>
+
 </article>
 
 <% if (!index && post.comments && config.disqus_shortname){ %>
@@ -100,10 +101,10 @@
             gitment.render('gitmentContainer')
         </script>
     </section>
-    -->
     <section id="comments">
             <img src="https://raw.githubusercontent.com/anonymalias/util_mess/master/walkerdu_wechat_prize.jpg" width="40%" height="40%" alt="" />
     </section>
+    -->
 
 <% } %>
 

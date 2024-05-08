@@ -7,8 +7,7 @@ menu:
   WIKI: http://wiki.walkerdu.com 
 #rss: /atom.xml
 
-# Content
-excerpt_link: Read More
+# Content excerpt_link: Read More
 fancybox: true
 
 # Sidebar
@@ -37,3 +36,8 @@ math:
   per_page: true
 
   engine: mathjax
+
+#是否开启打赏功能
+donate: true
+#打赏文案
+donate_message: 感谢支持~
