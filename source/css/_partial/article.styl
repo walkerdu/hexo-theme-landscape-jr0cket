@@ -395,7 +395,11 @@ $article-gallery-ctrl
     line-height 1em
     font-size 0.9em
     float left 
+
 .toc
+    position fixed 
+    top banner-height
+    left 0
     padding 0
     margin 1em
     line-height 1.8em
@@ -404,3 +408,9 @@ $article-gallery-ctrl
 
     .toc-child 
         margin-left 1em
+
+.toc::before {
+  content: "目录";
+  color: red;
+  font-size: 120%;
+}
